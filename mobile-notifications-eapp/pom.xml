@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Copyright (C) MuleSoft, Inc. All rights reserved. http://www.mulesoft.com The software in this package is published under the terms of the 
-	Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International Public License, a copy of which has been included with this distribution 
-	in the LICENSE.txt file. -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<!--
+  Copyright (C) MuleSoft, Inc. All rights reserved. http://www.mulesoft.com
+
+  The software in this package is published under the terms of the
+  Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International Public License,
+  a copy of which has been included with this distribution in the LICENSE.txt file.
+--><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<!-- students: replace with your AP org ID -->
@@ -13,10 +15,13 @@
 		<relativePath>../parent-pom/pom.xml</relativePath>
 	</parent>
 	<groupId>2db1673b-0118-4c59-80cd-4cf14d37cb49</groupId>
-	<artifactId>check-in-papi-app</artifactId>
-	<version>1.0.0</version>
+	<artifactId>mobile-notifications-eapp</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
 	<packaging>mule-application</packaging>
-	<name>check-in-papi</name>
+	<name>mobile-notifications-eapp</name>
+	<properties>
+		<api.layer>${api.layer.eapi}</api.layer>
+	</properties>
 	<build>
 		<plugins>
 			<plugin>
@@ -33,15 +38,24 @@
 		</plugins>
 	</build>
 	<dependencies>
-		<!-- limitation in Mule Maven tooling: must define before apikit! -->
+		<dependency>
+			<groupId>org.mule.connectors</groupId>
+			<artifactId>mule-email-connector</artifactId>
+			<classifier>mule-plugin</classifier>
+		</dependency>
 		<dependency>
 			<groupId>org.mule.connectors</groupId>
 			<artifactId>mule-http-connector</artifactId>
 			<classifier>mule-plugin</classifier>
 		</dependency>
 		<dependency>
-			<groupId>org.mule.modules</groupId>
-			<artifactId>mule-apikit-module</artifactId>
+			<groupId>org.mule.connectors</groupId>
+			<artifactId>mule-vm-connector</artifactId>
+			<classifier>mule-plugin</classifier>
+		</dependency>
+		<dependency>
+			<groupId>com.mulesoft.connectors</groupId>
+			<artifactId>anypoint-mq-connector</artifactId>
 			<classifier>mule-plugin</classifier>
 		</dependency>
 		<!-- standard dependencies for all Mule apps - start -->
@@ -50,17 +64,9 @@
 			<artifactId>apps-commons</artifactId>
 			<classifier>mule-plugin</classifier>
 		</dependency>
-		<!-- limitation in Mule Maven tooling: must be defined before apikit! -->
-		<!-- <dependency> <groupId>org.mule.connectors</groupId> <artifactId>mule-http-connector</artifactId> <classifier>mule-plugin</classifier> 
-			</dependency> -->
 		<dependency>
 			<groupId>com.mulesoft.modules</groupId>
 			<artifactId>mule-secure-configuration-property-module</artifactId>
-			<classifier>mule-plugin</classifier>
-		</dependency>
-		<dependency>
-			<groupId>org.mule.modules</groupId>
-			<artifactId>mule-tracing-module</artifactId>
 			<classifier>mule-plugin</classifier>
 		</dependency>
 		<!-- test dependencies -->
@@ -83,21 +89,5 @@
 			<scope>test</scope>
 		</dependency>
 		<!-- standard dependencies for all Mule apps - end -->
-		<dependency>
-			<groupId>${passenger-data-sapi.groupId}</groupId>
-			<artifactId>mule-plugin-${passenger-data-sapi.artifactId}</artifactId>
-			<classifier>mule-plugin</classifier>
-		</dependency>
-		<dependency>
-			<groupId>${flights-management-sapi.groupId}</groupId>
-			<artifactId>mule-plugin-${flights-management-sapi.artifactId}</artifactId>
-			<version>${flights-management-sapi.version}</version>
-			<classifier>mule-plugin</classifier>
-		</dependency>
-		<dependency>
-			<groupId>${paypal-sapi.groupId}</groupId>
-			<artifactId>mule-plugin-${paypal-sapi.artifactId}</artifactId>
-			<classifier>mule-plugin</classifier>
-		</dependency>
 	</dependencies>
 </project>

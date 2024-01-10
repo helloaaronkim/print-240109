@@ -12,8 +12,8 @@ client id : e0d8067e64a84dd48254bd81beef8ab4
 client secret : 8D057353DA084Eee8A3ba42087e93d06
 
 ## Exchange Contributor
-client id : 
-client secret : 
+client id : 11815aa4d84545ffb06a983e1dbe767e
+client secret : 4E4A1ba947d94E9097eacf2F910059e4
 
 ## Paypal
 Access token : l2k28ss.sid3fjfd5_Zsrq9cK9hNsqrSTfu8ji334EEVW83hjskShnodE

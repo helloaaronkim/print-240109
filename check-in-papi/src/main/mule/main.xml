@@ -21,14 +21,38 @@ http://www.mulesoft.org/schema/mule/pay-pal-sapi http://www.mulesoft.org/schema/
 		<set-variable variableName="checkIn" value="#[payload]" doc:name="checkIn" />
 		<flow-ref doc:name="validate-ticket-passport-matches" doc:id="f87957c0-494a-4c60-b6d7-de62df410137"
 			name="validate-ticket-passport-matches" />
-		<flow-ref name="check-in-flights-management" doc:name="check-in-flights-management" />
-		<flow-ref name="register-passenger-data" doc:name="register-passenger-data" />
-		<flow-ref name="create-payment-for-bags" doc:name="create-payment-for-bags" />
-    <ee:transform doc:name="paymentID: paypalReturn.paymentID">
+		<set-variable variableName="allCompensationFlows"
+			value="#[['check-in-flights-management-compensate', 'register-passenger-data-compensate', 'create-payment-for-bags-compensate']]"
+			doc:name="allCompensationFlows" />
+		<try doc:name="Try" doc:id="003c6058-6244-4b45-b2e2-7dbdbdf15f40">
+			<scatter-gather doc:name="Scatter-Gather" doc:id="207b4d96-9c99-4c0c-8a97-84e443971b84">
+				<route>
+					<flow-ref name="check-in-flights-management" doc:name="check-in-flights-management" />
+				</route>
+				<route>
+					<flow-ref name="register-passenger-data" doc:name="register-passenger-data" />
+				</route>
+				<route>
+					<flow-ref name="create-payment-for-bags" doc:name="create-payment-for-bags" />
+				</route>
+			</scatter-gather>
+			<error-handler>
+				<on-error-propagate type="MULE:COMPOSITE_ROUTING">
+					<set-variable variableName="successfulRouteIndexes" value="#[(error.errorMessage.payload.results pluck $$ as Number)]"
+						doc:name="successfulRouteIndexes" />
+					<set-variable variableName="failedRouteIndexes" value="#[(error.errorMessage.payload.failures pluck $$ as Number)]"
+						doc:name="failedRouteIndexes" />
+					<set-variable variableName="compensationFlows" value="#[vars.successfulRouteIndexes map vars.allCompensationFlows[$]]"
+						doc:name="compensationFlows" />
+					<flow-ref name="compensate-successful-routes-of-check-in-by-pnr" doc:name="compensate-successful-routes-of-check-in-by-pnr" />
+				</on-error-propagate>
+			</error-handler>
+		</try>
+		<ee:transform doc:name="paymentID: paypalReturn.paymentID">
       <ee:message>
         <ee:set-payload><![CDATA[%dw 2.0
 				        output application/json
-				        var paypalReturn = payload
+				        var paypalReturn = payload['2'].payload
 				        ---
 				        {
 				            paymentID: paypalReturn.paymentID
@@ -37,6 +61,30 @@ http://www.mulesoft.org/schema/mule/pay-pal-sapi http://www.mulesoft.org/schema/
     </ee:transform>
 		<logger level="INFO" message="Checked-in by PNR" doc:name="END" />
 	</flow>
+	
+	<flow name="compensate-successful-routes-of-check-in-by-pnr">
+	    <foreach collection="#[vars.compensationFlows]">
+	      <flow-ref name="#[payload]" doc:name="successedFlows"/>
+	    </foreach>
+	</flow>
+	
+	
+	
+	  <flow name="check-in-flights-management-compensate">
+    <logger level="INFO" message="Must compensate for successful check-in-flights-management" doc:name="Must compensate for successful check-in-flights-management"/>
+  </flow>
+  <flow name="register-passenger-data-compensate">
+    <logger level="INFO" message="Must compensate for successful register-passenger-data" doc:name="Must compensate for successful register-passenger-data"/>
+  </flow>
+  <flow name="create-payment-for-bags-compensate">
+    <logger level="INFO" message="Must compensate for successful create-payment-for-bags" doc:name="Must compensate for successful create-payment-for-bags"/>
+  </flow>
+	
+	
+	
+	
+	
+	
 	<flow name="validate-ticket-passport-matches" doc:id="b04e6c1c-58eb-49ec-942e-20ad7b804c8c">
 		<flow-ref name="get-ticket-by-pnr" doc:name="get-ticket-by-pnr" />
 		<choice doc:name="Ticket holder name check">

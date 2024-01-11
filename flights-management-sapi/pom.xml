@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright (C) MuleSoft, Inc. All rights reserved. http://www.mulesoft.com The software in this package is published under the terms of the 
 	Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International Public License, a copy of which has been included with this distribution 
-	in the LICENSE.txt file. -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	in the LICENSE.txt file. --><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<!-- students: replace with your AP org ID -->
@@ -92,6 +90,21 @@
 		<dependency>
 			<groupId>com.mulesoft.connectors</groupId>
 			<artifactId>anypoint-mq-connector</artifactId>
+			<classifier>mule-plugin</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.mule.modules</groupId>
+			<artifactId>mule-validation-module</artifactId>
+			<classifier>mule-plugin</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.mule.modules</groupId>
+			<artifactId>mule-xml-module</artifactId>
+			<classifier>mule-plugin</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.mule.modules</groupId>
+			<artifactId>mule-json-module</artifactId>
 			<classifier>mule-plugin</classifier>
 		</dependency>
 	</dependencies>

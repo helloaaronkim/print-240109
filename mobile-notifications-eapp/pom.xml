@@ -89,5 +89,10 @@
 			<scope>test</scope>
 		</dependency>
 		<!-- standard dependencies for all Mule apps - end -->
+		<dependency>
+			<groupId>org.mule.modules</groupId>
+			<artifactId>mule-tracing-module</artifactId>
+			<classifier>mule-plugin</classifier>
+		</dependency>
 	</dependencies>
 </project>
